@@ -1,5 +1,6 @@
 import React, {Component, ReactNode} from "react";
 import Page from "../core/Page";
+import {Development} from "../lib";
 
 
 /**
@@ -10,10 +11,8 @@ class IndexPage extends Component<never, never> {
 
   // Rendering
   public render(): ReactNode {
-    return <Page>
-
-      <h1>Index page</h1>
-
+    return <Page style={{width: "100%", height: "100%"}}>
+      <Development />
     </Page>;
   }
 }

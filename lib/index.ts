@@ -1,5 +1,5 @@
-import Example from "./core/Example";
+import Development from "./components/Development";
 
 export {
-  Example
+  Development
 };
