@@ -1,5 +1,6 @@
 import EventManager from "./EventManager";
 
+
 type PointerEventType =
   "pointerdown" |
   "pointerup" |
@@ -23,25 +24,17 @@ export type ExtendedPointerEvent = {
 type PointerEventCallback = (event: ExtendedPointerEvent) => void;
 type DOMPointerEventCallback = (event: PointerEvent) => void;
 
-type PointerEventData = {
-  event: PointerEventType;
-  callback: DOMPointerEventCallback;
-};
-
 
 /**
  * PointerEvent Manager
  * @author Ingo Andelhofs
- *
- * @todo: @on/off: Make sure transformed callback is the same, otherwise removeEventListener will not work
- * @todo: @on/off: Make sure a default event listeners is added for up, down if only move is added
- *        (if no pointerdown event is present, pointerDown will not work correctly)
  */
 class PointerEventManager<T extends HTMLElement> {
 
   // Members
   private element: T;
   private eventManager: EventManager<PointerEventType, DOMPointerEventCallback, PointerEvent>;
+
 
   // Public Methods
   public constructor(element: T) {
@@ -62,6 +55,8 @@ class PointerEventManager<T extends HTMLElement> {
 
   // Private listeners
   private pointerDown = false;
+  private insideElement = false;
+
   private movement: Point = {x: 0, y: 0};
   private location: Point = {x: 0, y: 0};
   private lastLocation: Point = {x: 0, y: 0};
@@ -72,6 +67,10 @@ class PointerEventManager<T extends HTMLElement> {
   }
 
   private onPointerMove = (event: PointerEvent) => {
+    if (!this.pointerDown && !this.insideElement) {
+      return;
+    }
+
     // Movement
     const {clientX, clientY} = event;
     this.lastLocation = {x: this.location.x, y: this.location.y};
@@ -92,9 +91,15 @@ class PointerEventManager<T extends HTMLElement> {
     const {clientX, clientY} = event;
     this.location = {x: clientX, y: clientY};
     this.lastLocation = {x: clientX, y: clientY};
+
+    // Inside
+    this.insideElement = true;
   }
 
-  private onPointerLeave = () => {}
+  private onPointerLeave = () => {
+    this.insideElement = false;
+  }
+
 
   // Private Utils
   private percentages: ExtendedPointerEvent['percentages'] = (element: HTMLElement): Point => {
@@ -116,7 +121,6 @@ class PointerEventManager<T extends HTMLElement> {
   // Private Helpers
   private listen(event: PointerEventType, callback: DOMPointerEventCallback) {
     if (!this.eventManager.hasListeners()) {
-      console.log("setup listeners");
       this.addDefaultListeners();
     }
 
@@ -127,7 +131,6 @@ class PointerEventManager<T extends HTMLElement> {
     this.eventManager.remove(event, callback);
 
     if (!this.eventManager.hasListeners()) {
-      console.log("destroy listeners");
       this.removeDefaultListeners();
     }
   }

@@ -1,5 +1,11 @@
-import Development from "./components/Development";
+import Slider from "./components/Slider/Slider";
+import MultiSlider from "./components/MultiSlider/MultiSlider";
+import PointerEventManager from "./utils/PointerEventManager";
+import ValueUtil from "./utils/ValueUtil";
 
 export {
-  Development
+  Slider,
+  MultiSlider,
+  ValueUtil,
+  PointerEventManager,
 };

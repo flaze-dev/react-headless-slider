@@ -1,6 +1,7 @@
+/* eslint-disable react/no-children-prop */
 import React, {Component, ReactNode} from "react";
+import {Slider, MultiSlider} from "../lib";
 import Page from "../core/Page";
-import {Development} from "../lib";
 
 
 /**
@@ -11,8 +12,56 @@ class IndexPage extends Component<never, never> {
 
   // Rendering
   public render(): ReactNode {
-    return <Page style={{width: "100%", height: "100%"}}>
-      <Development />
+    return <Page className="w-full h-full p-4 flex flex-col gap-4">
+
+      <h1 className="text-2xl font-bold">Slider demo's</h1>
+
+      <Slider className="w-full h-8 bg-green-500">
+        <Slider.Progress children={({percentageX}: any) => {
+          return <div
+            className="h-full bg-blue-600"
+            style={{width: `${percentageX * 100}%`}}
+          />
+        }}/>
+      </Slider>
+
+      <MultiSlider
+        className="relative mx-auto w-full h-8 bg-green-500"
+        children={({handles}: any) => {
+
+          const initialized = handles.length === 2;
+
+          return <>
+            <MultiSlider.Progress
+              progressID={0}
+              startID={0}
+              endID={1}
+
+              className="absolute h-full bg-gray-500"
+              style={{
+                left: initialized ? `${handles[0].percentage}%` : 0,
+                width: initialized ? `calc(${handles[1].percentage - handles[0].percentage}%)` : 0,
+              }}
+            />
+
+            <MultiSlider.Handle
+              handleID={0}
+              percentage={20}
+              className="absolute h-full w-8 bg-blue-600"
+              style={{left: initialized ? `${handles[0].percentage}%` : 0}}
+            />
+
+            <MultiSlider.Handle
+              handleID={1}
+              percentage={60}
+              className="absolute h-full w-8 bg-blue-600"
+              style={{left: initialized ? `calc(${handles[1].percentage}% - 2rem)` : 0}}
+            />
+          </>;
+        }}
+      />
+
+
     </Page>;
   }
 }
