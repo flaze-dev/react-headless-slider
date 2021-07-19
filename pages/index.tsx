@@ -27,9 +27,13 @@ class IndexPage extends Component<never, never> {
 
       <MultiSlider
         className="relative mx-auto w-full h-8 bg-green-500"
-        children={({handles}: any) => {
+        onHandlesChange={({getHandleById}: any) => {
 
-          const initialized = handles.length === 2;
+          const handle = getHandleById(0)!;
+          console.log(handle.percentage);
+
+        }}
+        children={({handles, initialized}) => {
 
           return <>
             <MultiSlider.Progress
@@ -60,7 +64,6 @@ class IndexPage extends Component<never, never> {
           </>;
         }}
       />
-
 
     </Page>;
   }

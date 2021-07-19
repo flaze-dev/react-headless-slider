@@ -3,13 +3,14 @@ import React, {Component, HTMLAttributes, ReactNode} from "react";
 import MultiSliderHandle from "./MultiSliderHandle";
 import MultiSliderProgress from "./MultiSliderProgress";
 import {MultiSliderContext} from "./_context";
-import {HandleInfo} from "./_types";
+import {HandleInfo, OnHandleChangeProps, RenderProps} from "./_types";
 import RefManager from "../../utils/RefManager";
 import ValueUtil from "../../utils/ValueUtil";
 
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  children: (data: any) => ReactNode;
+  children: (props: RenderProps) => ReactNode;
+  onHandlesChange?: (props: OnHandleChangeProps) => void;
 }
 
 interface State {
@@ -43,7 +44,12 @@ class MultiSlider extends Component<Props, State> {
 
     this.setState((s: State) => ({
       handles: [...s.handles, handle],
-    }));
+    }), () => {
+      this.props?.onHandlesChange?.({
+        handles: this.state.handles,
+        getHandleById: this.getHandleById,
+      });
+    });
 
     return handle.id;
   }
@@ -66,6 +72,11 @@ class MultiSlider extends Component<Props, State> {
       });
 
       return {handles: updatedHandles};
+    },() => {
+      this.props?.onHandlesChange?.({
+        handles: this.state.handles,
+        getHandleById: this.getHandleById,
+      });
     });
   }
 
@@ -104,7 +115,16 @@ class MultiSlider extends Component<Props, State> {
       });
 
       return {handles: updatedHandles};
+    }, () => {
+      this.props?.onHandlesChange?.({
+        handles: this.state.handles,
+        getHandleById: this.getHandleById,
+      });
     });
+  }
+
+  private getHandleById = (id: number): HandleInfo | undefined => {
+    return this.state.handles.find((handle: HandleInfo) => handle.id === id);
   }
 
 
@@ -113,7 +133,9 @@ class MultiSlider extends Component<Props, State> {
 
     return <MultiSliderContext.Provider
       children={this.props.children({
-        handles: this.state.handles
+        handles: this.state.handles,
+        initialized: this.state.handles.length > 0,
+        getHandleById: this.getHandleById,
       })}
       value={{
         handles: this.state.handles,
@@ -125,7 +147,10 @@ class MultiSlider extends Component<Props, State> {
   }
 
   public render(): ReactNode {
-    const {children, ...rest} = this.props;
+    const {
+      onHandlesChange,
+      children, ...rest
+    } = this.props;
 
     return <div
       ref={this.refManager.createRef}
