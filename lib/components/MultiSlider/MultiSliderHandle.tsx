@@ -31,7 +31,8 @@ class MultiSliderHandle extends Component<Props, State> {
     event.domEvent.preventDefault();
 
     const {x} = event.movement;
-    this.context.moveHandle(this.props.handleID, x * 100);
+    const percentageX = x * 100;
+    this.context.moveHandle(this.props.handleID, percentageX);
   }
 
   private onPointerMove = (event: ExtendedPointerEvent) => {
@@ -41,7 +42,8 @@ class MultiSliderHandle extends Component<Props, State> {
       return;
 
     const {x} = event.movement;
-    this.context.moveHandle(this.props.handleID, x * 100);
+    const percentageX = x * 100;
+    this.context.moveHandle(this.props.handleID, percentageX);
   }
 
   private onPointerUp = (event: ExtendedPointerEvent) => {

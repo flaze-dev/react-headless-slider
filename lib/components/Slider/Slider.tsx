@@ -76,8 +76,8 @@ class Slider extends Component<Props, State> {
 
     const {x, y} = event.percentages(this.refManager.get());
     const percentages: Percentages = {
-      percentageX: x,
-      percentageY: y,
+      percentageX: x * 100,
+      percentageY: y * 100,
     };
 
     this.updatePercentages(percentages);
@@ -91,8 +91,8 @@ class Slider extends Component<Props, State> {
 
     const {x, y} = event.percentages(this.refManager.get());
     const percentages: Percentages = {
-      percentageX: x,
-      percentageY: y,
+      percentageX: x * 100,
+      percentageY: y * 100,
     };
 
     this.updatePercentages(percentages);
@@ -167,7 +167,10 @@ class Slider extends Component<Props, State> {
   }
 
   public render(): ReactNode {
-    const {children, ...rest} = this.props;
+    const {
+      percentageX, percentageY, onPercentageChange, onPercentageXChange, onPercentageYChange,
+      children, ...rest
+    } = this.props;
 
     return <div
       ref={this.refManager.createRef}

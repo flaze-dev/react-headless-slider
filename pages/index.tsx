@@ -14,13 +14,13 @@ class IndexPage extends Component<never, never> {
   public render(): ReactNode {
     return <Page className="w-full h-full p-4 flex flex-col gap-4">
 
-      <h1 className="text-2xl font-bold">Slider demo's</h1>
+      <h1 className="text-2xl font-bold">Slider demo&apos;s</h1>
 
       <Slider className="w-full h-8 bg-green-500">
         <Slider.Progress children={({percentageX}: any) => {
           return <div
             className="h-full bg-blue-600"
-            style={{width: `${percentageX * 100}%`}}
+            style={{width: `${percentageX}%`}}
           />
         }}/>
       </Slider>
