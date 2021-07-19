@@ -16,7 +16,7 @@ class IndexPage extends Component<never, never> {
 
       <h1 className="text-2xl font-bold">Slider demo&apos;s</h1>
 
-      <Slider className="w-full h-8 bg-green-500">
+      <Slider className="w-full h-8 bg-green-500" percentageX={40}>
         <Slider.Progress children={({percentageX}: any) => {
           return <div
             className="h-full bg-blue-600"
