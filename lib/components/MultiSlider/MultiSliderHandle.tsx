@@ -20,6 +20,7 @@ class MultiSliderHandle extends Component<Props, State> {
 
   // Static
   public static contextType = MultiSliderContext;
+  // @ts-ignore
   public context: MultiSliderContextValue;
 
   // Ref
