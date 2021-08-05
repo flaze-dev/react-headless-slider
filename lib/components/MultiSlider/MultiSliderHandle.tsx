@@ -1,7 +1,7 @@
 import React, {Component, HTMLAttributes, ReactNode} from "react";
 import RefManager from "../../utils/RefManager";
 import PointerEventManager, {ExtendedPointerEvent} from "../../utils/PointerEventManager";
-import {MultiSliderContext} from "./_context";
+import {MultiSliderContext, MultiSliderContextValue} from "./_context";
 
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -20,6 +20,7 @@ class MultiSliderHandle extends Component<Props, State> {
 
   // Static
   public static contextType = MultiSliderContext;
+  public context: MultiSliderContextValue;
 
   // Ref
   private refManager = new RefManager<HTMLDivElement>();
@@ -68,13 +69,20 @@ class MultiSliderHandle extends Component<Props, State> {
 
   public componentDidMount() {
     this.initListeners();
-    this.context.initHandle(this.props.handleID, this.props.percentage);
+    this.context.initHandle(this.props.handleID, this.props.percentage!);
+  }
+
+  public componentDidUpdate(p: Readonly<Props>) {
+    const handle = this.context.getHandleById(this.props.handleID)!;
+
+    if (this.props.percentage !== p.percentage && this.props.percentage !== handle.percentage) {
+      this.context.updateHandle(handle.id, this.props.percentage!);
+    }
   }
 
   public componentWillUnmount() {
     this.clearListeners();
   }
-
 
   // Rendering
   public render(): ReactNode {

@@ -54,6 +54,26 @@ class MultiSlider extends Component<Props, State> {
     return handle.id;
   }
 
+  private updateHandle = (id: number, percentage: number): void => {
+    this.setState((s: State) => ({
+      handles: s.handles.map((handle: HandleInfo) => {
+        if (handle.id === id) {
+          return {
+            id, 
+            percentage: ValueUtil.ensureBetween(percentage, {min: 0, max: 100}),
+          };
+        }
+
+        return handle;
+      }),
+    }), () => {
+      // this.props?.onHandlesChange?.({
+      //   handles: this.state.handles,
+      //   getHandleById: this.getHandleById,
+      // });
+    });
+  }
+
   private moveHandle = (id: number, movementX: number): void => {
     const {clientWidth} = this.refManager.get();
     const movementPercentage = movementX / clientWidth;
@@ -140,8 +160,10 @@ class MultiSlider extends Component<Props, State> {
       value={{
         handles: this.state.handles,
         initHandle: this.initHandle,
+        updateHandle: this.updateHandle,
         moveHandle: this.moveHandle,
         moveProgress: this.moveProgress,
+        getHandleById: this.getHandleById,
       }}
     />;
   }

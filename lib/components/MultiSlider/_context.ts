@@ -2,9 +2,13 @@ import React, {useContext} from "react";
 import {HandleInfo} from "./_types";
 
 
-type MultiSliderContextValue = {
+export type MultiSliderContextValue = {
   handles: HandleInfo[];
-  initHandle: (percentage: number) => number;
+  initHandle: (id: number, percentage: number) => number;
+  updateHandle: (id: number, percentage: number) => void;
+  moveHandle: (id: number, movementX: number) => void;
+  moveProgress: (startID: number, endID: number, movementX: number) => void;
+  getHandleById: (id: number) => HandleInfo | undefined;
 };
 
 

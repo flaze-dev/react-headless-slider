@@ -2,13 +2,19 @@
 import React, {Component, ReactNode} from "react";
 import {Slider, MultiSlider} from "../lib";
 import Page from "../core/Page";
+import { OnHandleChangeProps } from "../dist/components/MultiSlider/_types";
 
 
 /**
  * IndexPage Component
  * @author Ingo Andelhofs
  */
-class IndexPage extends Component<never, never> {
+class IndexPage extends Component<never, any> {
+
+  public state = {
+    start: 20,
+  };
+
 
   // Rendering
   public render(): ReactNode {
@@ -25,13 +31,22 @@ class IndexPage extends Component<never, never> {
         }}/>
       </Slider>
 
+      <button 
+        className="p-1 bg-blue-600 text-white font-semibold rounded w-max"
+        children="Update slider"
+        onClick={() => {
+          this.setState(() => ({
+            start: 10,
+          }));
+        }}
+      />
+
       <MultiSlider
         className="relative mx-auto w-full h-8 bg-green-500"
-        onHandlesChange={({getHandleById}: any) => {
-
-          const handle = getHandleById(0)!;
-          console.log(handle.percentage);
-
+        onHandlesChange={({getHandleById}: OnHandleChangeProps) => {
+          this.setState(() => ({
+            start: getHandleById(0)?.percentage,
+          }));
         }}
         children={({handles, initialized}) => {
 
@@ -50,7 +65,7 @@ class IndexPage extends Component<never, never> {
 
             <MultiSlider.Handle
               handleID={0}
-              percentage={20}
+              percentage={this.state.start}
               className="absolute h-full w-8 bg-blue-600"
               style={{left: initialized ? `${handles[0].percentage}%` : 0}}
             />
