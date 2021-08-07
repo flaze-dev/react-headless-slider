@@ -66,12 +66,7 @@ class MultiSlider extends Component<Props, State> {
 
         return handle;
       }),
-    }), () => {
-      this.props?.onHandlesChange?.({
-        handles: this.state.handles,
-        getHandleById: this.getHandleById,
-      });
-    });
+    }));
   }
 
   private moveHandle = (id: number, movementX: number): void => {
