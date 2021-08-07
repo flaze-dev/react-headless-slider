@@ -1,5 +1,6 @@
-# react-headless-slider
-A headless Slider build with React.
+# React Headless Slider (unstable)
+A headless Slider compnent build with React.
+
 
 ## Installation
 ```bash
@@ -9,6 +10,7 @@ or
 ```bash
 $ yarn add @flaze/react-headless-slider
 ```
+
 
 ## Usage
 ### Slider
